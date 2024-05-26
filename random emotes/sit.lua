@@ -4,24 +4,11 @@ local bLife = 15
 confetti.registerMesh("blood", models.blood, bLife)
 local sOT = 1.0 / bLife
 
-vanilla_model.PLAYER:setVisible(false)
---vanilla_model.ARMOR:setVisible(false)
---vanilla_model.HELMET_ITEM:setVisible(true)
-vanilla_model.CAPE:setVisible(false)
-vanilla_model.ELYTRA:setVisible(false)
-
-models.sit:setPrimaryTexture("SKIN")
-models.sit.root.Body.Cape:setPrimaryTexture("CAPE")
-models.sit.root.Body.Elytra:setPrimaryTexture("ELYTRA")
-
-local sitAnim = animations.sit.sit
-local startYaw = 0
+local sitAnim = animations.emotes.sit
 
 function getUp()
     sitAnim:stop()
     renderer:setOffsetCameraPivot(0)
-    --models.sit:setRot(0, 0, 0)
-    --renderer:setRootRotationAllowed(true)
 end
 
 function pings.sit()
@@ -30,8 +17,6 @@ function pings.sit()
     else
         sitAnim:play()
         renderer:setOffsetCameraPivot(0, -9.75 / 16, 0)
-        --models.sit:setRot(0, 180 - player:getBodyYaw(), 0)
-        --renderer:setRootRotationAllowed(false)
     end
 end
 
@@ -54,11 +39,13 @@ function onCutter(pPos, cPos)
 end
 
 function events.tick()
-    if player:getVelocity().xyz:length() > .01 or player:getPose() ~= "STANDING" then -- Get up on move
-        getUp()
-    end
-    
-    if sitAnim:isPlaying() then -- Sitting on a stonecutter kinda hurts
+    if sitAnim:isPlaying() then
+        if player:getVelocity().xyz:length() > .01 or player:getPose() ~= "STANDING" then -- Get up on move
+            getUp()
+            return
+        end
+        
+        -- Sitting on a stonecutter kinda hurts
         local sittingOn = world.getBlockState(player:getPos())
         if sittingOn:getID() == "minecraft:stonecutter" then
             local cutterCenter = sittingOn:getPos() + vec(0.5, 0.5, 0.5)
@@ -98,9 +85,14 @@ function events.tick()
     end
 end
 
-local page = action_wheel:newPage()
-action_wheel:setPage(page)
-page:newAction()
-    :title('Sit')
-    :item('minecraft:oak_stairs')
-    :setOnLeftClick(pings.sit)
+local Sit = {}
+function Sit.addEmote(emotes)
+    local data = {
+        title = 'Sit',
+        item = 'minecraft:oak_stairs',
+        clicked = pings.sit,
+        anim = sitAnim
+    }
+    table.insert(emotes, data)
+end
+return Sit
