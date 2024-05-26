@@ -1,12 +1,12 @@
 local confetti = require("confetti")
-local frames = 17
+local frames = 16
 local ticksPerFrame = 2
 
 confetti.registerMesh("kaboom", models.kaboom.Explosion, frames * ticksPerFrame)
 
 local myparticles = {}
 function explode(spawnPos)
-    sounds["explosion"]
+    sounds["silly-boom"]
         :pos(spawnPos)
         :pitch(1)
         :volume(1)
@@ -68,13 +68,16 @@ vanilla_model.PLAYER:setVisible(false)
 vanilla_model.CAPE:setVisible(false)
 vanilla_model.ELYTRA:setVisible(false)
 models.animation:setPrimaryTexture("SKIN")
-models.animation.root.Skull:setPrimaryTexture("SKIN")
+models.animation.Skull:setPrimaryTexture("SKIN")
 models.animation.root.Body.Back.Cape:setPrimaryTexture("CAPE")
 models.animation.root.Body.Back.Elytra:setPrimaryTexture("ELYTRA")
 
-local deathAnim1 = animations.animation.death_anim
-local deathAnim2 = animations.animation.death_anim2
-local deathAnim3 = animations.animation.death_anim3
+local deathAnims = {
+    animations.animation.death_anim,
+    animations.animation.death_anim2,
+    animations.animation.death_anim3
+}
+
 local animData = {
     death_anim = {
         offsetX = 0.5,
@@ -96,28 +99,18 @@ local animData = {
     }
 }
 
-local currentAnim = deathAnim1
+local currentAnim = deathAnims[1]
 local deathAnimTime = 0
 local startYaw = 0
-function pings.anim1()
+function pings.anim(anim)
     currentAnim:stop()
-    currentAnim = deathAnim1
-    animStart()
-end
-
-function pings.anim2()
-    currentAnim:stop()
-    currentAnim = deathAnim2
-    animStart()
-end
-
-function pings.anim3()
-    currentAnim:stop()
-    currentAnim = deathAnim3
+    currentAnim = deathAnims[anim]
     animStart()
 end
 
 function animStart()
+    if not player:isLoaded() then return end
+
     deathAnimTime = 0
     currentAnim:play()
     
@@ -150,20 +143,33 @@ function events.TICK()
     end
 end
 
+local _pos = vec(0, 0, 0)
+function events.POST_RENDER()
+    local data = animData[currentAnim:getName()]
+    if not currentAnim:isPlaying() then
+        renderer:setOffsetCameraPivot(0)
+        return
+    elseif deathAnimTime < data.duration then
+        _pos:set(models.animation.root.Head:partToWorldMatrix():apply() - player:getPos())
+        _pos.y = _pos.y - 1.40718
+    end
+    renderer:setOffsetCameraPivot(_pos)
+end
+
 local page = action_wheel:newPage()
 action_wheel:setPage(page)
 page:newAction()
     :title('§c§lSPONTANIUM COMBUSTUM')
     :item('minecraft:oak_stairs')
     :hoverColor(1, 0.568627451, 0)
-    :setOnLeftClick(pings.anim1)
+    :setOnLeftClick(function() pings.anim(1) end)
 page:newAction()
     :title('§c§lSPONTANIUM COMBUSTUM')
     :item('minecraft:fire_charge')
     :hoverColor(1, 0.568627451, 0)
-    :setOnLeftClick(pings.anim2)
+    :setOnLeftClick(function() pings.anim(2) end)
 page:newAction()
     :title('§c§lSPONTANIUM COMBUSTUM')
     :item('minecraft:tnt')
     :hoverColor(1, 0.568627451, 0)
-    :setOnLeftClick(pings.anim3)
+    :setOnLeftClick(function() pings.anim(3) end)
