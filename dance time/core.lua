@@ -10,16 +10,16 @@ local emotes = {}
 
 local current = nil
 function clicked(emote)
-    if current ~= nil and current ~= emote and current.anim:isPlaying() then
-        current.clicked()
+    if current ~= nil and current ~= emote then
+        current.stop()
     end
     
     current = emote
     emote.clicked()
 end
 
-require("sit").addEmote(emotes)
-require("smugdance").addEmote(emotes)
+require("smugdance")(emotes)
+require("breakdance")(emotes)
 
 local page = action_wheel:newPage()
 action_wheel:setPage(page)

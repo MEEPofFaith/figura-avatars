@@ -1,10 +1,18 @@
+vanilla_model.PLAYER:setVisible(false)
+vanilla_model.CAPE:setVisible(false)
+vanilla_model.ELYTRA:setVisible(false)
+
+models.sit:setPrimaryTexture("SKIN")
+models.sit.root.Body.Back.Cape:setPrimaryTexture("CAPE")
+models.sit.root.Body.Back.Elytra:setPrimaryTexture("ELYTRA")
+
 local confetti = require("confetti")
 
 local bLife = 15
 confetti.registerMesh("blood", models.blood, bLife)
 local sOT = 1.0 / bLife
 
-local sitAnim = animations.emotes.sit
+local sitAnim = animations.sit.sit
 
 function getUp()
     sitAnim:stop()
@@ -67,9 +75,10 @@ function events.tick()
                     vel.z = rnd
                 end
                 
+                local spawnPos = sittingOn:getPos() + vec(0.5, 0.5, 0.5)
                 confetti.newParticle(
                     "blood",
-                    sittingOn:getPos() + vec(0.5, 0.5, 0.5),
+                    spawnPos,
                     --player:getPos(),
                     vel,
                     {
@@ -79,20 +88,20 @@ function events.tick()
                     }
                 )
                 
-                sounds:playSound("ui.stonecutter.take_result", player:getPos(), 1, 1, false)
+                sounds["ui.stonecutter.take_result"]
+                    :pos(spawnPos)
+                    :pitch(0.95 + math.random() * 0.1)
+                    :volume(1)
+                    :subtitle("Comfortable Seating")
+                    :play()
             end
         end
     end
 end
 
-local Sit = {}
-function Sit.addEmote(emotes)
-    local data = {
-        title = 'Sit',
-        item = 'minecraft:oak_stairs',
-        clicked = pings.sit,
-        anim = sitAnim
-    }
-    table.insert(emotes, data)
-end
-return Sit
+local page = action_wheel:newPage()
+action_wheel:setPage(page)
+page:newAction()
+    :title("Sit")
+    :item("minecraft:oak_stairs")
+    :setOnLeftClick(pings.sit)
