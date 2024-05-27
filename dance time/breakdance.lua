@@ -34,7 +34,7 @@ function events.tick()
         end
         
         playTime = playTime + 1
-        if playTime == 80 then
+        if playTime == 75 then
             breakdanceStart:stop()
             breakdanceLoop:play()
         end
