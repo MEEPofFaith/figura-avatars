@@ -2,9 +2,9 @@ vanilla_model.PLAYER:setVisible(false)
 vanilla_model.CAPE:setVisible(false)
 vanilla_model.ELYTRA:setVisible(false)
 
-models.emotes:setPrimaryTexture("SKIN")
-models.emotes.root.Body.Back.Cape:setPrimaryTexture("CAPE")
-models.emotes.root.Body.Back.Elytra:setPrimaryTexture("ELYTRA")
+models.dances:setPrimaryTexture("SKIN")
+models.dances.root.Body.Back.Cape:setPrimaryTexture("CAPE")
+models.dances.root.Body.Back.Elytra:setPrimaryTexture("ELYTRA")
 
 local emotes = {}
 

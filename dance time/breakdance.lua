@@ -1,5 +1,8 @@
-local breakdanceStart = animations.emotes.breakdance_start
-local breakdanceLoop = animations.emotes.breakdance_loop
+local breakdanceStart = animations.dances.breakdance_start
+local breakdanceLoop = animations.dances.breakdance_loop
+local skullBreakdance = animations.dance_skull.mini_breakdance
+
+models.dance_skull.Skull:setPrimaryTexture("SKIN")
 
 local playing = false
 local playTime = 0
@@ -35,6 +38,10 @@ function events.tick()
             breakdanceStart:stop()
             breakdanceLoop:play()
         end
+    end
+    
+    if not skullBreakdance:isPlaying() then
+        skullBreakdance:play()
     end
 end
 

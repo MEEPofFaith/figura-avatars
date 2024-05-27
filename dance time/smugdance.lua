@@ -1,4 +1,4 @@
-local smugDance = animations.emotes.smug_dance
+local smugDance = animations.dances.smug_dance
 
 function pings.smugDance()
     if smugDance:isPlaying() then
