@@ -13,7 +13,8 @@ local clipSounds = {
     "item.shield.block",
     "entity.goat.ram_impact",
     "block.deepslate.hit",
-    "entity.generic.explode" --May be too insane
+    "entity.generic.explode",
+    "entity.wither.break_block"
 }
 
 local posRandMax = 12
