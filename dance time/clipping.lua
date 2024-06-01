@@ -52,6 +52,7 @@ function addEmote(emotes)
     local data = {
         title = 'Clipping',
         item = 'minecraft:stone',
+        toggledColor = vectors.vec3(125, 125, 125) / 255,
         toggled = pings.clipIntoTheFloor,
         playing = isPlaying,
         moveStop = false

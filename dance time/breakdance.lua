@@ -49,6 +49,7 @@ function addEmote(emotes)
     local data = {
         title = 'Breakdancing',
         item = 'minecraft:cherry_sapling',
+        toggledColor = vectors.vec3(245, 95, 217) / 255,
         toggled = pings.breakdance,
         playing = isPlaying,
         moveStop = true

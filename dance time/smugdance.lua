@@ -16,6 +16,7 @@ function addEmote(emotes)
     local data = {
         title = 'Smug Dance',
         item = 'minecraft:leather_helmet',
+        toggledColor = vectors.vec3(144, 11, 140) / 255,
         toggled = pings.smugDance,
         playing = isPlaying,
         moveStop = true

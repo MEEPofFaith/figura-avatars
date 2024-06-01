@@ -38,5 +38,6 @@ for i, e in pairs(emotes) do
         :title(e.title)
         :item(e.item)
         :setOnToggle(function(state) clicked(e, state) end)
+    if e.toggledColor ~= nil then action:setToggleColor(e.toggledColor) end
     e.action = action
 end
