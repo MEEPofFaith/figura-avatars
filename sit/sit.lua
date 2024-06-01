@@ -87,7 +87,6 @@ function events.tick()
                         rotation = vec(random(360), random(360), random(360))
                     }
                 )
-                
                 sounds["ui.stonecutter.take_result"]
                     :pos(spawnPos)
                     :pitch(0.95 + math.random() * 0.1)

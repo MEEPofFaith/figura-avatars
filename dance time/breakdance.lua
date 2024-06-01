@@ -6,33 +6,29 @@ models.dance_skull.Skull:setPrimaryTexture("SKIN")
 
 local playing = false
 local playTime = 0
-function stop()
+function stopBreakdancing()
     breakdanceStart:stop()
     breakdanceLoop:stop()
     playing = false
 end
 
-function pings.breakdance()
-    if playing then
-        stop()
-    else
+function pings.breakdance(state)
+    playing = state
+    if state then
         breakdanceStart:play()
         playing = true
         playTime = 0
+    else
+        stopBreakdancing()
     end
 end
 
 function pings.stopBreakdance()
-    stop()
+    stopBreakdancing()
 end
 
 function events.tick()
     if playing then
-        if (player:getVelocity().xyz:length() > .01 or player:getPose() ~= "STANDING") then
-            stop()
-            return
-        end
-        
         playTime = playTime + 1
         if playTime == 75 then
             breakdanceStart:stop()
@@ -45,12 +41,17 @@ function events.tick()
     end
 end
 
+function isPlaying()
+    return playing
+end
+
 function addEmote(emotes)
     local data = {
         title = 'Breakdancing',
         item = 'minecraft:cherry_sapling',
-        clicked = pings.breakdance,
-        stop = pings.stopBreakdance
+        toggled = pings.breakdance,
+        playing = isPlaying,
+        moveStop = true
     }
     table.insert(emotes, data)
 end

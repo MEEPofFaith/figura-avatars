@@ -1,29 +1,24 @@
 local smugDance = animations.dances.smug_dance
 
-function pings.smugDance()
-    if smugDance:isPlaying() then
-        smugDance:stop()
-    else
+function pings.smugDance(state)
+    if state then
         smugDance:play()
-    end
-end
-
-function pings.stopSmugDance()
-    smugDance:stop()
-end
-
-function events.tick()
-    if smugDance:isPlaying() and (player:getVelocity().xyz:length() > .01 or player:getPose() ~= "STANDING") then
+    else
         smugDance:stop()
     end
+end
+
+function isPlaying()
+    return smugDance:isPlaying()
 end
 
 function addEmote(emotes)
     local data = {
         title = 'Smug Dance',
         item = 'minecraft:leather_helmet',
-        clicked = pings.smugDance,
-        stop = pings.stopSmugDance
+        toggled = pings.smugDance,
+        playing = isPlaying,
+        moveStop = true
     }
     table.insert(emotes, data)
 end
