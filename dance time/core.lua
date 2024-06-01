@@ -8,21 +8,27 @@ models.dances.spinPivot.root.Body.Back.Elytra:setPrimaryTexture("ELYTRA")
 
 local emotes = {}
 
-local current = nil
 function clicked(emote, state)
-    if current ~= nil and current ~= emote then
-        current.action:setToggled(false)
-        current.toggled(false)
+    if emote.exclusive then
+        for i, e in pairs(emotes) do
+            if e.exclusive and e.playing() then
+                e.action:setToggled(false)
+                e.toggled(false)
+            end
+        end
     end
     
-    current = emote
     emote.toggled(state)
 end
 
 function events.tick()
-    if current ~= nil and current.moveStop and current.playing() and (player:getVelocity().xyz:length() > .01 or player:getPose() ~= "STANDING") then
-        current.action:setToggled(false)
-        current.toggled(false)
+    if player:getVelocity().xyz:length() > .01 or player:getPose() ~= "STANDING" then
+        for i, e in pairs(emotes) do
+            if e.moveStop and e.playing() then
+                e.action:setToggled(false)
+                e.toggled(false)
+            end
+        end
     end
 end
 
@@ -39,5 +45,6 @@ for i, e in pairs(emotes) do
         :item(e.item)
         :setOnToggle(function(state) clicked(e, state) end)
     if e.toggledColor ~= nil then action:setToggleColor(e.toggledColor) end
+    if e.exclusive == nil then e.exclusive = true end
     e.action = action
 end

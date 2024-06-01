@@ -55,7 +55,8 @@ function addEmote(emotes)
         toggledColor = vectors.vec3(125, 125, 125) / 255,
         toggled = pings.clipIntoTheFloor,
         playing = isPlaying,
-        moveStop = false
+        moveStop = false,
+        exclusive = false
     }
     table.insert(emotes, data)
 end

@@ -25,7 +25,8 @@ function addEmote(emotes)
         item = 'minecraft:music_disc_otherside',
         toggled = pings.toggleSpin,
         playing = isPlaying,
-        moveStop = false
+        moveStop = false,
+        exclusive = false
     }
     table.insert(emotes, data)
 end
