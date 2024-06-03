@@ -4,6 +4,14 @@ local skullBreakdance = animations.dance_skull.mini_breakdance
 
 models.dance_skull.Skull:setPrimaryTexture("SKIN")
 
+function events.skull_render(delta, block, item, entity, mode)
+    if mode == "HEAD" then
+        models.dance_skull.Skull:setPos(0, 7, 0)
+    else
+        models.dance_skull.Skull:setPos(0, 0, 0)
+    end
+end
+
 local playing = false
 local playTime = 0
 function stopBreakdancing()
